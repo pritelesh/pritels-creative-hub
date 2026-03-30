@@ -1,9 +1,26 @@
-import { motion } from "framer-motion";
-import profileImg from "@/assets/profile.jpg";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useMouseParallax } from "@/hooks/useFloating";
+
+const heroImages = [
+  "/hero1/ChatGPT Image Feb 17, 2026, 06_19_34 PM.png",
+  "/hero1/ChatGPT Image Feb 18, 2026, 01_57_45 AM.png",
+  "/hero1/ChatGPT Image Feb 18, 2026, 12_12_06 AM.png",
+  "/hero1/ChatGPT Image Feb 18, 2026, 12_21_52 AM.png",
+  "/hero1/ChatGPT Image Feb 18, 2026, 12_43_45 AM.png",
+  "/hero1/ChatGPT Image Mar 5, 2026, 01_06_54 AM.png",
+];
 
 const HeroSection = () => {
   const mouse = useMouseParallax(8);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4000); // Change image every 4 seconds
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section id="hero" className="min-h-screen flex items-center pt-16">
@@ -17,12 +34,19 @@ const HeroSection = () => {
           style={{ x: mouse.x * 0.3, y: mouse.y * 0.3 }}
         >
           <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden border border-border/50 shadow-2xl backdrop-blur-sm">
-            <img
-              src={profileImg}
-              alt="Pritelesh Bhowmik Nel"
-              className="w-full h-full object-cover object-top"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImageIndex}
+                src={heroImages[currentImageIndex]}
+                alt="Pritelesh Bhowmik Nel"
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+                className="absolute inset-0 w-full h-full object-cover object-top"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
           </div>
         </motion.div>
 
