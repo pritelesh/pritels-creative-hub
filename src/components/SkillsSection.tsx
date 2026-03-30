@@ -6,13 +6,13 @@ const skillGroups = [
   {
     title: "Development",
     icon: Code,
-    skills: ["React", "Tailwind CSS", "WordPress", "Shopify"],
+    skills: ["React", "Next.js", "Tailwind CSS", "WordPress", "Shopify", "Git & GitHub", "VS Code", "Vercel / Netlify", "Postman"],
     span: "md:col-span-2 md:row-span-2",
   },
   {
-    title: "Creative",
+    title: "Creative & AI",
     icon: Palette,
-    skills: ["DaVinci Resolve", "3D Blender", "Midjourney", "Runway ML"],
+    skills: ["DaVinci Resolve", "3D Blender", "Figma", "Spline", "Dribbble", "Stitch", "ChatGPT", "Gemini", "Grok", "Lovable", "Emigrant"],
     span: "md:col-span-1 md:row-span-2",
   },
   {

@@ -49,7 +49,7 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
     >
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
         <Link to="/" className="font-heading text-lg font-bold tracking-tight text-foreground">
-          Pritelash<span className="text-muted-foreground">.dev</span>
+          Pritelesh<span className="text-muted-foreground">.dev</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

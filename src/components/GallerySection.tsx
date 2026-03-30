@@ -4,16 +4,19 @@ import { ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import FloatingCard from "./FloatingCard";
 
-const categories = ["All", "Web", "Video", "Design"];
+import projectsData from "../data/projects.json";
 
-const projects = [
-  { title: "Leisure Holidays Website", category: "Web" },
-  { title: "J&J Global Branding", category: "Design" },
-  { title: "Chobicode Promo Video", category: "Video" },
-  { title: "Polash Computer Site", category: "Web" },
-  { title: "Product Photography Edit", category: "Design" },
-  { title: "Corporate Reel", category: "Video" },
-];
+const categories = ["All", "Web", "UI/UX", "Video", "Design"];
+
+// Define project type for typescript
+interface Project {
+  title: string;
+  category: string;
+  image?: string;
+  link?: string;
+}
+
+const projects: Project[] = projectsData;
 
 const GallerySection = () => {
   const [filter, setFilter] = useState("All");
@@ -68,8 +71,12 @@ const GallerySection = () => {
               transition={{ duration: 0.4, delay: i * 0.08 }}
             >
               <FloatingCard index={i} className="group overflow-hidden hover:border-foreground/30 transition-all duration-300">
-                <div className="bg-secondary/50 aspect-[4/3] flex items-center justify-center">
-                  <span className="font-heading text-muted-foreground text-sm">{project.category}</span>
+                <div className="bg-secondary/50 aspect-[4/3] flex items-center justify-center overflow-hidden">
+                  {project.image ? (
+                    <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  ) : (
+                    <span className="font-heading text-muted-foreground text-sm">{project.category}</span>
+                  )}
                 </div>
                 <div className="absolute inset-0 bg-primary/80 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl">
                   <h3 className="font-heading font-semibold text-primary-foreground text-sm mb-3">

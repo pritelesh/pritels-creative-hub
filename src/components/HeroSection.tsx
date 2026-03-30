@@ -19,7 +19,7 @@ const HeroSection = () => {
           <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden border border-border/50 shadow-2xl backdrop-blur-sm">
             <img
               src={profileImg}
-              alt="Pritelash Bhowmik Nel"
+              alt="Pritelesh Bhowmik Nel"
               className="w-full h-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
@@ -34,10 +34,10 @@ const HeroSection = () => {
           className="text-center md:text-left"
         >
           <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground mb-3">
-            CSE Graduate · Creative Lead
+            Frontend Developer · Software Engineer
           </p>
           <h1 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            Pritelash Bhowmik Nel
+            Pritelesh Bhowmik Nel
           </h1>
           <p className="text-lg text-muted-foreground mb-2 font-medium">
             Admin & Creative Lead at <span className="text-foreground">Chobicode</span>

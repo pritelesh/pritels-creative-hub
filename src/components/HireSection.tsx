@@ -31,11 +31,11 @@ const HireSection = () => {
             className="space-y-6"
           >
             <FloatingCard index={0} className="p-4 hover:border-foreground/30 transition-colors duration-300">
-              <a href="mailto:pritelash@example.com" className="flex items-center gap-4">
+              <a href="mailto:pritelesh@example.com" className="flex items-center gap-4">
                 <Mail size={20} className="text-foreground" />
                 <div>
                   <p className="text-xs text-muted-foreground">Email</p>
-                  <p className="text-sm font-medium text-foreground">pritelash@example.com</p>
+                  <p className="text-sm font-medium text-foreground">pritelesh@example.com</p>
                 </div>
               </a>
             </FloatingCard>
