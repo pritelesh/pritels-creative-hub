@@ -114,6 +114,14 @@
     font-family: var(--font-heading);
     @apply font-bold tracking-tight;
   }
+
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
 }
 
 /* Hire Me pulse glow in dark mode */

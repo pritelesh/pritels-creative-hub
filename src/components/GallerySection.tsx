@@ -1,8 +1,7 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
-import FloatingCard from "./FloatingCard";
 
 import projectsData from "../data/projects.json";
 
@@ -14,130 +13,185 @@ interface Project {
   link?: string;
 }
 
-// Showcasing a smaller selection for the cinematic horizontal scroll
-const showcaseProjects: Project[] = projectsData.slice(0, 6);
+const showcaseProjects: Project[] = projectsData.slice(0, 5);
 
 const GallerySection = () => {
-  const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
+  const [currentPage, setCurrentPage] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  // Calculate the horizontal translation
-  // We move from 0 to -(total items - 1) * 100%
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(showcaseProjects.length - 1) * 100}%`]);
-  
-  // Smooth out the scroll movement
-  const springX = useSpring(x, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const flipPage = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentPage((prev) => (prev + newDirection + showcaseProjects.length) % showcaseProjects.length);
+  };
+
+  // Variants for the page flip animation
+  const variants = {
+    initial: (direction: number) => ({
+      rotateY: direction > 0 ? 110 : -110,
+      opacity: 0,
+      scale: 0.9,
+    }),
+    animate: {
+      rotateY: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      rotateY: direction > 0 ? -110 : 110,
+      opacity: 0,
+      scale: 0.9,
+    }),
+  };
 
   return (
-    <section id="gallery" className="relative h-[600vh] bg-background" ref={targetRef}>
-      {/* Sticky container */}
-      <div className="sticky top-0 h-screen flex flex-col items-center overflow-hidden">
-        {/* Header - Stays at the top while scrolling */}
-        <div className="w-full max-w-7xl mx-auto px-6 pt-24 pb-8 z-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
-          >
-            <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-3">Portfolio Highlights</p>
-              <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground">Selected Works</h2>
-              <div className="w-24 h-1.5 bg-foreground mt-4 rounded-full" />
+    <section id="gallery" className="py-24 bg-background overflow-hidden selection:bg-foreground/10">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20"
+        >
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-500">
+              <BookOpen size={16} className="text-foreground" />
+              <p className="text-[10px] uppercase tracking-[0.4em] font-bold">Showcase Volume 01</p>
             </div>
-            <Link
-              to="/gallery"
-              className="group flex items-center gap-3 text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300 mb-2"
+            <h2 className="heading-display text-4xl md:text-6xl text-foreground">My Work Showcase</h2>
+            <div className="w-24 h-1.5 bg-foreground rounded-full" />
+          </div>
+          <Link
+            to="/gallery"
+            className="group flex items-center gap-3 text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300 pb-2 border-b-2 border-border/30 hover:border-foreground"
+          >
+            <span>Browse Full Archive</span>
+            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+
+        {/* 3D Visual Book Component */}
+        <div className="relative h-[550px] md:h-[650px] perspective-2000 flex items-center justify-center">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={currentPage}
+              custom={direction}
+              variants={variants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{
+                duration: 0.7,
+                ease: [0.23, 1, 0.32, 1], // Custom cinematic easing
+              }}
+              // Drag functionality for mobile flipping
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x > 100) flipPage(-1);
+                else if (info.offset.x < -100) flipPage(1);
+              }}
+              className="absolute w-full max-w-5xl h-full transform-style-3d shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden bg-card border border-border/40 backdrop-blur-xl"
             >
-              <span className="pb-1 border-b border-border/50 group-hover:border-foreground transition-all">Explore Full Archive</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1 font-serif">→</span>
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Horizontal Track */}
-        <div className="flex-1 w-full flex items-center">
-          <motion.div style={{ x: springX }} className="flex">
-            {showcaseProjects.map((project, i) => (
-              <div 
-                key={`${project.title}-${i}`} 
-                className="w-screen h-full flex items-center justify-center px-6 md:px-24 group/slide"
-              >
-                <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
-                  {/* Image Part */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="relative aspect-video md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-border/30 group/img"
-                  >
-                    {project.image ? (
-                      <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover/img:scale-105" 
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-secondary/10 flex items-center justify-center">
-                        <span className="text-muted-foreground/20 text-9xl font-heading font-bold">{i+1}</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
-                  </motion.div>
-
-                  {/* Text Part */}
-                  <div className="flex flex-col">
-                    <motion.div
-                      initial={{ opacity: 0, x: 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                      <p className="text-xs font-bold uppercase tracking-[0.5em] text-muted-foreground mb-4">0{i+1} / Project</p>
-                      <h3 className="heading-display text-4xl md:text-5xl lg:text-7xl text-foreground mb-6 leading-tight">
-                        {project.title}
-                      </h3>
-                      <p className="text-muted-foreground text-lg mb-8 max-w-md leading-relaxed">
-                        A boutique digital experience crafted for <span className="text-foreground font-medium">{project.category}</span> enthusiasts, focusing on modern aesthetics and high-end usability.
-                      </p>
-                      <div className="flex gap-4">
-                        <button className="flex items-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-xs font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-foreground/10">
-                          <span>Case Study</span>
-                          <ExternalLink size={14} /> 
-                        </button>
-                        <div className="flex items-center px-4 text-[10px] uppercase tracking-widest text-muted-foreground font-bold border-l border-border/50">
-                          {project.category}
-                        </div>
-                      </div>
-                    </motion.div>
+              <div className="flex flex-col md:flex-row h-full">
+                {/* Book Cover / Project Preview Layer */}
+                <div className="w-full md:w-1/2 relative bg-secondary/20 overflow-hidden group/cover">
+                  {showcaseProjects[currentPage].image ? (
+                    <img
+                      src={showcaseProjects[currentPage].image}
+                      alt={showcaseProjects[currentPage].title}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover/cover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-secondary/5">
+                      <span className="text-foreground/5 text-[15rem] font-bold select-none">{currentPage + 1}</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute top-8 left-8 flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-md border border-border/50">
+                    <div className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Project Live</span>
                   </div>
                 </div>
+
+                {/* Content Page Layer */}
+                <div className="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center relative bg-card h-full">
+                  {/* Subtle Spine Detail */}
+                  <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background/10 to-transparent hidden md:block" />
+                  <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-border/20 hidden md:block" />
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="space-y-8"
+                  >
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-muted-foreground mb-4">Edition 0{currentPage + 1}</p>
+                      <h3 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight">
+                        {showcaseProjects[currentPage].title}
+                      </h3>
+                    </div>
+
+                    <p className="text-muted-foreground text-lg leading-relaxed max-w-sm">
+                      A premium transformation focused on <span className="text-foreground font-semibold underline decoration-foreground/20 underline-offset-4">{showcaseProjects[currentPage].category}</span>. Built with modern patterns and creative execution.
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-6 pt-4">
+                      <button className="flex items-center gap-3 px-10 py-5 rounded-full bg-foreground text-background text-[11px] font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-foreground/20 group/cta">
+                        <span>Read Case Study</span>
+                        <ExternalLink size={14} className="group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />
+                      </button>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground border-l-2 border-border pl-6 py-1">
+                        {showcaseProjects[currentPage].category}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
               </div>
-            ))}
-          </motion.div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Controls */}
+          <div className="absolute mt-[650px] md:mt-0 md:right-[-80px] flex md:flex-col gap-5 z-50">
+            <button
+              aria-label="Previous Project"
+              onClick={() => flipPage(-1)}
+              className="w-14 h-14 rounded-full border border-border bg-background/90 backdrop-blur-xl flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-500 shadow-2xl active:scale-90"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              aria-label="Next Project"
+              onClick={() => flipPage(1)}
+              className="w-14 h-14 rounded-full border border-border bg-background/90 backdrop-blur-xl flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-500 shadow-2xl active:scale-90"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="h-24 w-full flex flex-col items-center justify-center gap-4 py-8">
-           <div className="w-48 h-[1px] bg-border/50 relative overflow-hidden">
-              <motion.div 
-                className="absolute top-0 left-0 h-full bg-foreground"
-                style={{ width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }}
+        {/* Dynamic Pagination */}
+        <div className="flex justify-center items-center gap-4 mt-32 md:mt-16">
+          <span className="text-[10px] font-bold text-muted-foreground">01</span>
+          <div className="flex gap-2">
+            {showcaseProjects.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Page ${i + 1}`}
+                onClick={() => {
+                  setDirection(i > currentPage ? 1 : -1);
+                  setCurrentPage(i);
+                }}
+                className={`h-1.5 transition-all duration-700 rounded-full ${
+                  i === currentPage ? "w-14 bg-foreground" : "w-4 bg-border hover:bg-foreground/30"
+                }`}
               />
-           </div>
-           <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold">
-              Scroll to Explore Portfolio
-           </p>
+            ))}
+          </div>
+          <span className="text-[10px] font-bold text-muted-foreground">0{showcaseProjects.length}</span>
         </div>
       </div>
-
-      {/* Mobile Fallback - Hidden on Md+ screens */}
-      {/* In a real scenario, you might want to conditionally render or use CSS to swap for better performance */}
     </section>
   );
 };
