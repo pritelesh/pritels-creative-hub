@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import FloatingCard from "./FloatingCard";
@@ -13,111 +14,130 @@ interface Project {
   link?: string;
 }
 
-// Only showing a curated selection for the home page showcase
-const showcaseProjects: Project[] = projectsData.slice(0, 8);
+// Showcasing a smaller selection for the cinematic horizontal scroll
+const showcaseProjects: Project[] = projectsData.slice(0, 6);
 
 const GallerySection = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  // Calculate the horizontal translation
+  // We move from 0 to -(total items - 1) * 100%
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(showcaseProjects.length - 1) * 100}%`]);
+  
+  // Smooth out the scroll movement
+  const springX = useSpring(x, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <section id="gallery" className="py-24 bg-background">
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-20 gap-6">
+    <section id="gallery" className="relative h-[600vh] bg-background" ref={targetRef}>
+      {/* Sticky container */}
+      <div className="sticky top-0 h-screen flex flex-col items-center overflow-hidden">
+        {/* Header - Stays at the top while scrolling */}
+        <div className="w-full max-w-7xl mx-auto px-6 pt-24 pb-8 z-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+          >
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground mb-3">Selected Works</p>
-              <h2 className="heading-display text-4xl md:text-5xl text-foreground mb-4">My Work Showcase</h2>
-              <div className="w-20 h-1 bg-foreground rounded-full" />
+              <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-3">Portfolio Highlights</p>
+              <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground">Selected Works</h2>
+              <div className="w-24 h-1.5 bg-foreground mt-4 rounded-full" />
             </div>
             <Link
               to="/gallery"
-              className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300"
+              className="group flex items-center gap-3 text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300 mb-2"
             >
-              <span className="underline underline-offset-8 decoration-border/50 group-hover:decoration-foreground transition-all">View Full Gallery</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="pb-1 border-b border-border/50 group-hover:border-foreground transition-all">Explore Full Archive</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1 font-serif">→</span>
             </Link>
-          </div>
-        </motion.div>
-
-        <div className="relative flex flex-col gap-[10vh]">
-          {showcaseProjects.map((project, i) => {
-            return (
-              <div 
-                key={`${project.title}-${i}`} 
-                className="sticky top-24 pt-12 md:pt-24"
-                style={{ top: `${96 + i * 20}px` }} // Incremental offset for stacking effect
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <FloatingCard 
-                    index={i} 
-                    className="group/card overflow-hidden border-border/40 hover:border-foreground/20 transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl bg-card/90"
-                  >
-                    <div className="flex flex-col md:flex-row min-h-[300px] md:min-h-[450px]">
-                      {/* Image Container */}
-                      <div className="w-full md:w-[60%] relative overflow-hidden bg-secondary/20">
-                        {project.image ? (
-                          <img 
-                            src={project.image} 
-                            alt={project.title} 
-                            loading="lazy" 
-                            className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110" 
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <span className="font-heading text-muted-foreground/30 text-8xl font-bold uppercase select-none">{project.category[0]}</span>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
-                      </div>
-
-                      {/* Content Container */}
-                      <div className="w-full md:w-[40%] p-8 md:p-12 flex flex-col justify-center">
-                        <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground mb-4">{project.category}</p>
-                        <h3 className="font-heading font-bold text-foreground text-3xl md:text-4xl mb-6 leading-tight">
-                          {project.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-2 mb-10">
-                          {/* Mock tools for professional look */}
-                          {['Modern UI', 'Responsive', 'Creative'].map(tag => (
-                            <span key={tag} className="px-3 py-1 rounded-full text-[10px] font-medium bg-secondary text-secondary-foreground border border-border/50">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <button className="flex items-center gap-3 w-fit px-8 py-4 rounded-full bg-foreground text-background text-xs font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-foreground/10 hover:shadow-foreground/20">
-                          <span>View Project</span>
-                          <ExternalLink size={14} /> 
-                        </button>
-                      </div>
-                    </div>
-                  </FloatingCard>
-                </motion.div>
-              </div>
-            );
-          })}
+          </motion.div>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-24 text-center"
-        >
-          <Link 
-            to="/gallery" 
-            className="inline-block px-10 py-5 rounded-full border border-border text-foreground font-heading font-bold text-sm hover:bg-foreground hover:text-background transition-all duration-500"
-          >
-            Explore Complete Archive ({projectsData.length}+ Projects)
-          </Link>
-        </motion.div>
+        {/* Horizontal Track */}
+        <div className="flex-1 w-full flex items-center">
+          <motion.div style={{ x: springX }} className="flex">
+            {showcaseProjects.map((project, i) => (
+              <div 
+                key={`${project.title}-${i}`} 
+                className="w-screen h-full flex items-center justify-center px-6 md:px-24 group/slide"
+              >
+                <div className="max-w-6xl w-full grid md:grid-cols-2 gap-12 items-center">
+                  {/* Image Part */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative aspect-video md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-border/30 group/img"
+                  >
+                    {project.image ? (
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover/img:scale-105" 
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-secondary/10 flex items-center justify-center">
+                        <span className="text-muted-foreground/20 text-9xl font-heading font-bold">{i+1}</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
+                  </motion.div>
+
+                  {/* Text Part */}
+                  <div className="flex flex-col">
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                      <p className="text-xs font-bold uppercase tracking-[0.5em] text-muted-foreground mb-4">0{i+1} / Project</p>
+                      <h3 className="heading-display text-4xl md:text-5xl lg:text-7xl text-foreground mb-6 leading-tight">
+                        {project.title}
+                      </h3>
+                      <p className="text-muted-foreground text-lg mb-8 max-w-md leading-relaxed">
+                        A boutique digital experience crafted for <span className="text-foreground font-medium">{project.category}</span> enthusiasts, focusing on modern aesthetics and high-end usability.
+                      </p>
+                      <div className="flex gap-4">
+                        <button className="flex items-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-xs font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-foreground/10">
+                          <span>Case Study</span>
+                          <ExternalLink size={14} /> 
+                        </button>
+                        <div className="flex items-center px-4 text-[10px] uppercase tracking-widest text-muted-foreground font-bold border-l border-border/50">
+                          {project.category}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="h-24 w-full flex flex-col items-center justify-center gap-4 py-8">
+           <div className="w-48 h-[1px] bg-border/50 relative overflow-hidden">
+              <motion.div 
+                className="absolute top-0 left-0 h-full bg-foreground"
+                style={{ width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }}
+              />
+           </div>
+           <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold">
+              Scroll to Explore Portfolio
+           </p>
+        </div>
       </div>
+
+      {/* Mobile Fallback - Hidden on Md+ screens */}
+      {/* In a real scenario, you might want to conditionally render or use CSS to swap for better performance */}
     </section>
   );
 };
