@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import { ExternalLink, ChevronRight, Lock, Eye, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import projectsData from "../data/projects.json";
@@ -13,183 +13,216 @@ interface Project {
   link?: string;
 }
 
-const showcaseProjects: Project[] = projectsData.slice(0, 5);
+const showcaseProjects: Project[] = projectsData.slice(0, 10);
 
 const GallerySection = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const flipPage = (newDirection: number) => {
-    setDirection(newDirection);
-    setCurrentPage((prev) => (prev + newDirection + showcaseProjects.length) % showcaseProjects.length);
-  };
+  // Automated 3-second cycle
+  useEffect(() => {
+    if (!isRevealed) return;
 
-  // Variants for the page flip animation
-  const variants = {
-    initial: (direction: number) => ({
-      rotateY: direction > 0 ? 110 : -110,
-      opacity: 0,
-      scale: 0.9,
-    }),
-    animate: {
-      rotateY: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      rotateY: direction > 0 ? -110 : 110,
-      opacity: 0,
-      scale: 0.9,
-    }),
-  };
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % showcaseProjects.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isRevealed]);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % showcaseProjects.length);
+  }, []);
 
   return (
-    <section id="gallery" className="py-24 bg-background overflow-hidden selection:bg-foreground/10">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20"
-        >
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-muted-foreground animate-in fade-in slide-in-from-left-2 duration-500">
-              <BookOpen size={16} className="text-foreground" />
-              <p className="text-[10px] uppercase tracking-[0.4em] font-bold">Showcase Volume 01</p>
+    <section id="gallery" className="relative py-32 bg-background overflow-hidden min-h-[700px]">
+      <div className="max-w-7xl mx-auto px-6 h-full flex flex-col">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-8 z-10">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-3 text-muted-foreground mb-4">
+              <div className="w-10 h-[1px] bg-border" />
+              <p className="text-[10px] uppercase tracking-[0.4em] font-bold">Showcase Experience</p>
             </div>
             <h2 className="heading-display text-4xl md:text-6xl text-foreground">My Work Showcase</h2>
-            <div className="w-24 h-1.5 bg-foreground rounded-full" />
-          </div>
+            <div className="w-20 h-1 bg-foreground mt-6 rounded-full" />
+          </motion.div>
           <Link
             to="/gallery"
-            className="group flex items-center gap-3 text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300 pb-2 border-b-2 border-border/30 hover:border-foreground"
+            className="group flex items-center gap-3 text-xs font-bold text-muted-foreground hover:text-foreground transition-all duration-300 pb-2 border-b border-border/40 hover:border-foreground"
           >
-            <span>Browse Full Archive</span>
-            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            <span>Explore Full Archive</span>
+            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
-
-        {/* 3D Visual Book Component */}
-        <div className="relative h-[550px] md:h-[650px] perspective-2000 flex items-center justify-center">
-          <AnimatePresence initial={false} custom={direction} mode="wait">
-            <motion.div
-              key={currentPage}
-              custom={direction}
-              variants={variants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{
-                duration: 0.7,
-                ease: [0.23, 1, 0.32, 1], // Custom cinematic easing
-              }}
-              // Drag functionality for mobile flipping
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              onDragEnd={(_, info) => {
-                if (info.offset.x > 100) flipPage(-1);
-                else if (info.offset.x < -100) flipPage(1);
-              }}
-              className="absolute w-full max-w-5xl h-full transform-style-3d shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] dark:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden bg-card border border-border/40 backdrop-blur-xl"
-            >
-              <div className="flex flex-col md:flex-row h-full">
-                {/* Book Cover / Project Preview Layer */}
-                <div className="w-full md:w-1/2 relative bg-secondary/20 overflow-hidden group/cover">
-                  {showcaseProjects[currentPage].image ? (
-                    <img
-                      src={showcaseProjects[currentPage].image}
-                      alt={showcaseProjects[currentPage].title}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover/cover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-secondary/5">
-                      <span className="text-foreground/5 text-[15rem] font-bold select-none">{currentPage + 1}</span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute top-8 left-8 flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-md border border-border/50">
-                    <div className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Project Live</span>
-                  </div>
-                </div>
-
-                {/* Content Page Layer */}
-                <div className="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center relative bg-card h-full">
-                  {/* Subtle Spine Detail */}
-                  <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background/10 to-transparent hidden md:block" />
-                  <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-border/20 hidden md:block" />
-
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="space-y-8"
-                  >
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-muted-foreground mb-4">Edition 0{currentPage + 1}</p>
-                      <h3 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground leading-tight">
-                        {showcaseProjects[currentPage].title}
-                      </h3>
-                    </div>
-
-                    <p className="text-muted-foreground text-lg leading-relaxed max-w-sm">
-                      A premium transformation focused on <span className="text-foreground font-semibold underline decoration-foreground/20 underline-offset-4">{showcaseProjects[currentPage].category}</span>. Built with modern patterns and creative execution.
-                    </p>
-
-                    <div className="flex flex-wrap items-center gap-6 pt-4">
-                      <button className="flex items-center gap-3 px-10 py-5 rounded-full bg-foreground text-background text-[11px] font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-foreground/20 group/cta">
-                        <span>Read Case Study</span>
-                        <ExternalLink size={14} className="group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 transition-transform" />
-                      </button>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground border-l-2 border-border pl-6 py-1">
-                        {showcaseProjects[currentPage].category}
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation Controls */}
-          <div className="absolute mt-[650px] md:mt-0 md:right-[-80px] flex md:flex-col gap-5 z-50">
-            <button
-              aria-label="Previous Project"
-              onClick={() => flipPage(-1)}
-              className="w-14 h-14 rounded-full border border-border bg-background/90 backdrop-blur-xl flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-500 shadow-2xl active:scale-90"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button
-              aria-label="Next Project"
-              onClick={() => flipPage(1)}
-              className="w-14 h-14 rounded-full border border-border bg-background/90 backdrop-blur-xl flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-500 shadow-2xl active:scale-90"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
         </div>
 
-        {/* Dynamic Pagination */}
-        <div className="flex justify-center items-center gap-4 mt-32 md:mt-16">
-          <span className="text-[10px] font-bold text-muted-foreground">01</span>
-          <div className="flex gap-2">
-            {showcaseProjects.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Page ${i + 1}`}
-                onClick={() => {
-                  setDirection(i > currentPage ? 1 : -1);
-                  setCurrentPage(i);
-                }}
-                className={`h-1.5 transition-all duration-700 rounded-full ${
-                  i === currentPage ? "w-14 bg-foreground" : "w-4 bg-border hover:bg-foreground/30"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-[10px] font-bold text-muted-foreground">0{showcaseProjects.length}</span>
+        <div className="relative flex-1 rounded-[2.5rem] overflow-hidden border border-border/30 bg-card/10 backdrop-blur-sm min-h-[500px]">
+          <AnimatePresence mode="wait">
+            {!isRevealed ? (
+              /* LOCKED COVER STATE */
+              <motion.div
+                key="locked-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-card/40 backdrop-blur-2xl"
+              >
+                <motion.div 
+                   animate={{ y: [0, -10, 0] }}
+                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                   className="text-center p-12"
+                >
+                  <div className="relative mb-10 mx-auto w-24 h-24 flex items-center justify-center">
+                    <motion.div
+                       animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }}
+                       transition={{ duration: 2, repeat: Infinity }}
+                       className="absolute inset-0 bg-foreground rounded-full"
+                    />
+                    <div className="w-16 h-16 rounded-full bg-foreground flex items-center justify-center text-background shadow-xl shadow-foreground/20">
+                      <Lock size={24} />
+                    </div>
+                  </div>
+                  <h3 className="heading-display text-2xl md:text-3xl text-foreground mb-6">Experience is Hidden</h3>
+                  <p className="text-muted-foreground mb-12 max-w-sm mx-auto leading-relaxed text-sm">
+                    Unlock the showcase to explore a curated selection of my most professional work and digital journeys.
+                  </p>
+                  <button 
+                    onClick={() => setIsRevealed(true)}
+                    className="group relative flex items-center gap-4 px-10 py-5 rounded-full bg-foreground text-background text-[11px] font-bold overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-foreground/20"
+                  >
+                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                    <Eye size={16} />
+                    <span>CLICK TO VIEW SHOWCASE</span>
+                  </button>
+                </motion.div>
+                
+                {/* Visual texture for locked state */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none overflow-hidden">
+                   <div className="grid grid-cols-6 gap-4 p-8 w-full h-full grayscale blur-sm">
+                      {showcaseProjects.map((_, i) => (
+                         <div key={i} className="aspect-[4/3] bg-foreground rounded-xl" />
+                      ))}
+                   </div>
+                </div>
+              </motion.div>
+            ) : (
+              /* REVEALED CAROUSEL STATE */
+              <motion.div
+                key="revealed-carousel"
+                initial={{ opacity: 0, filter: "blur(20px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 flex"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full flex flex-col md:flex-row"
+                  >
+                    {/* Project Image Gallery (70%) */}
+                    <div className="w-full md:w-[65%] h-full relative group/img overflow-hidden">
+                       <div className="absolute inset-0 bg-background/20 z-10 pointer-events-none" />
+                       {showcaseProjects[currentIndex].image ? (
+                          <img 
+                            src={showcaseProjects[currentIndex].image} 
+                            alt={showcaseProjects[currentIndex].title}
+                            className="w-full h-full object-cover" 
+                          />
+                       ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-secondary/10">
+                             <span className="text-muted-foreground/10 text-9xl font-bold font-heading">{currentIndex + 1}</span>
+                          </div>
+                       )}
+                       
+                       {/* Floating Badge */}
+                       <div className="absolute top-8 left-8 z-20 flex items-center gap-3 px-4 py-2 rounded-full bg-background/80 backdrop-blur-md border border-border/40">
+                          <div className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" />
+                          <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground">Active Selection</span>
+                       </div>
+                    </div>
+
+                    {/* Project Info Panel (30%) */}
+                    <div className="w-full md:w-[35%] h-full p-10 md:p-16 flex flex-col justify-center bg-card">
+                       <motion.div
+                         initial={{ opacity: 0, y: 20 }}
+                         animate={{ opacity: 1, y: 0 }}
+                         transition={{ delay: 0.3 }}
+                       >
+                          <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-muted-foreground mb-8">Selected Case 0{currentIndex + 1}</p>
+                          <h3 className="heading-display text-3xl md:text-5xl text-foreground mb-8 leading-tight">
+                            {showcaseProjects[currentIndex].title}
+                          </h3>
+                          
+                          <div className="h-0.5 w-12 bg-border mb-12" />
+                          
+                          <p className="text-muted-foreground text-sm leading-relaxed mb-12">
+                            A showcase of technical expertise and creative vision in <span className="text-foreground font-semibold underline decoration-border underline-offset-8">{showcaseProjects[currentIndex].category}</span>. Built for maximum user impact.
+                          </p>
+
+                          <div className="flex flex-col gap-6">
+                             <button className="flex items-center gap-4 group/btn w-fit">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-foreground group-hover:underline transition-all underline-offset-4">Read Full Case Study</span>
+                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                             </button>
+                             <div className="pt-6 border-t border-border/30">
+                                <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-[0.3em]">Vertical: {showcaseProjects[currentIndex].category}</span>
+                             </div>
+                          </div>
+                       </motion.div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Progress Bar (Autoplay Timer) */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 z-30 flex">
+                   {showcaseProjects.map((_, i) => (
+                      <div key={i} className="flex-1 bg-border/20 overflow-hidden relative h-full">
+                         {i === currentIndex && (
+                            <motion.div
+                               initial={{ x: "-100%" }}
+                               animate={{ x: "0%" }}
+                               transition={{ duration: 3, ease: "linear" }}
+                               className="absolute inset-0 bg-foreground"
+                            />
+                         )}
+                         {i < currentIndex && <div className="absolute inset-0 bg-foreground/30" />}
+                      </div>
+                   ))}
+                </div>
+
+                {/* Manual Controls */}
+                <div className="absolute bottom-10 right-10 z-30 flex gap-4">
+                   <div className="flex items-center gap-4 px-6 py-4 rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-xl">
+                      <button 
+                        onClick={() => setCurrentIndex((prev) => (prev - 1 + showcaseProjects.length) % showcaseProjects.length)}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                         <ArrowRight size={16} className="rotate-180" />
+                      </button>
+                      <div className="text-[10px] font-bold text-foreground w-12 text-center">
+                        0{currentIndex + 1} / 10
+                      </div>
+                      <button 
+                        onClick={handleNext}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                         <ArrowRight size={16} />
+                      </button>
+                   </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
