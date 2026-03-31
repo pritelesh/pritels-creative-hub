@@ -1,10 +1,29 @@
 import { motion, Variants } from "framer-motion";
-import { Mail, Linkedin, Send } from "lucide-react";
-import { useState } from "react";
+import { Mail, Linkedin, Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
 import FloatingCard from "./FloatingCard";
+import { toast } from "sonner";
+import { useForm } from "@formspree/react";
 
 const HireSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [state, handleSubmit] = useForm("xwvwblpv");
+
+  useEffect(() => {
+    if (state.succeeded) {
+      toast.success("Message sent successfully! I'll get back to you soon.", {
+        description: "Thanks for reaching out, Pritelesh.",
+        icon: <CheckCircle2 className="text-green-500" />
+      });
+      setForm({ name: "", email: "", message: "" });
+    }
+    if (state.errors && Object.keys(state.errors).length > 0) {
+      toast.error("Oops! Something went wrong.", {
+        description: "Please try again later or contact me via LinkedIn.",
+        icon: <AlertCircle className="text-red-500" />
+      });
+    }
+  }, [state.succeeded, state.errors]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -77,25 +96,31 @@ const HireSection = () => {
             <motion.form
               variants={itemVariants}
               className="space-y-4"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit}
             >
               <div className="space-y-4">
                 <input
                   type="text"
+                  name="name"
                   placeholder="Your Name"
+                  required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full px-4 py-4 rounded-2xl bg-card/60 backdrop-blur-md border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40 focus:ring-1 focus:ring-foreground/10 transition-all shadow-inner"
                 />
                 <input
                   type="email"
+                  name="email"
                   placeholder="Your Email"
+                  required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full px-4 py-4 rounded-2xl bg-card/60 backdrop-blur-md border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40 focus:ring-1 focus:ring-foreground/10 transition-all shadow-inner"
                 />
                 <textarea
+                  name="message"
                   placeholder="Your Message"
+                  required
                   rows={4}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -104,11 +129,18 @@ const HireSection = () => {
               </div>
               <button
                 type="submit"
-                className="group relative flex items-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-sm font-bold overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-foreground/10"
+                disabled={state.submitting}
+                className="group relative flex items-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-sm font-bold overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-foreground/10 disabled:opacity-70 disabled:scale-100"
               >
                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <Send size={16} /> 
-                <span>Send Message</span>
+                {state.submitting ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : state.succeeded ? (
+                  <CheckCircle2 size={16} className="text-green-400" />
+                ) : (
+                  <Send size={16} />
+                )}
+                <span>{state.submitting ? "Sending..." : state.succeeded ? "Message Sent" : "Send Message"}</span>
               </button>
             </motion.form>
           </div>
