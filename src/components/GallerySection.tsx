@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronRight, Lock, Eye, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import BlurImage from "./BlurImage";
 
 import projectsData from "../data/projects.json";
 
@@ -133,10 +134,11 @@ const GallerySection = () => {
                     <div className="w-full md:w-[65%] h-full relative group/img overflow-hidden">
                        <div className="absolute inset-0 bg-background/20 z-10 pointer-events-none" />
                        {showcaseProjects[currentIndex].image ? (
-                          <img 
+                          <BlurImage 
                             src={showcaseProjects[currentIndex].image} 
                             alt={showcaseProjects[currentIndex].title}
                             className="w-full h-full object-cover" 
+                            containerClassName="w-full h-full"
                           />
                        ) : (
                           <div className="w-full h-full flex items-center justify-center bg-secondary/10">

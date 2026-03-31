@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Search, Filter } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BlurImage from "@/components/BlurImage";
 import { useTheme } from "@/hooks/useTheme";
 import FloatingCard from "@/components/FloatingCard";
 
@@ -115,11 +116,11 @@ const Gallery = () => {
                   >
                     <div className="relative aspect-square overflow-hidden bg-secondary/10">
                       {project.image ? (
-                        <img 
+                        <BlurImage 
                           src={project.image} 
                           alt={project.title} 
-                          loading="lazy" 
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                          containerClassName="w-full h-full"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">

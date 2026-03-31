@@ -62,7 +62,7 @@ const ExperienceSection = () => {
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2" />
 
           {experiences.map((exp, i) => {
             const isLeft = i % 2 === 0;
@@ -80,7 +80,7 @@ const ExperienceSection = () => {
                 className={`relative mb-12 md:w-1/2 ${isLeft ? "md:pr-16 md:ml-0 md:text-right" : "md:pl-16 md:ml-auto"} pl-16 md:pl-0`}
               >
                 {/* Timeline dot */}
-                <div className={`absolute top-2 w-3.5 h-3.5 rounded-full bg-foreground border-2 border-background left-[18px] md:left-auto shadow-[0_0_10px_rgba(0,0,0,0.2)] z-10 ${isLeft ? "md:-right-[7px]" : "md:-left-[7px]"}`} />
+                <div className={`absolute top-6 w-4 h-4 rounded-full bg-foreground border-4 border-background shadow-[0_0_15px_rgba(0,0,0,0.3)] z-20 left-6 -translate-x-1/2 ${isLeft ? "md:left-full" : "md:left-0"}`} />
 
                 <FloatingCard index={i} className="p-6 hover:border-foreground/30 transition-all duration-300 hover:shadow-xl">
                   <div className={`flex items-center gap-2 mb-2 ${isLeft ? "md:justify-end" : "md:justify-start"}`}>

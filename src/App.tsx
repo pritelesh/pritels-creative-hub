@@ -7,6 +7,8 @@ import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
+import WhatsAppButton from "@/components/WhatsAppButton";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -14,6 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <WhatsAppButton />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

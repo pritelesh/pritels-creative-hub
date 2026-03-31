@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMouseParallax } from "@/hooks/useFloating";
+import BlurImage from "./BlurImage";
 
 const heroImages = [
   "/hero1/ChatGPT Image Feb 17, 2026, 06_19_34 PM.png",
@@ -38,15 +39,12 @@ const HeroSection = () => {
         >
           <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden border border-border/50 shadow-2xl backdrop-blur-sm">
             <AnimatePresence mode="wait">
-              <motion.img
+              <BlurImage
                 key={currentImageIndex}
                 src={heroImages[currentImageIndex]}
                 alt="Pritelesh Bhowmik Nel"
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 1.2, ease: "easeInOut" }}
                 className="absolute inset-0 w-full h-full object-cover object-top"
+                containerClassName="absolute inset-0"
               />
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
