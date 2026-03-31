@@ -3,18 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMouseParallax } from "@/hooks/useFloating";
 
 const heroImages = [
-  "/hero1/241750112_533589251066328_8032423070292839440_n.jpg",
   "/hero1/ChatGPT Image Feb 17, 2026, 06_19_34 PM.png",
   "/hero1/ChatGPT Image Feb 18, 2026, 01_57_45 AM.png",
-  "/hero1/ChatGPT Image Feb 18, 2026, 12_12_06 AM.png",
   "/hero1/ChatGPT Image Feb 18, 2026, 12_21_52 AM.png",
-  "/hero1/ChatGPT Image Feb 18, 2026, 12_43_45 AM.png",
   "/hero1/ChatGPT Image Feb 18, 2026, 12_49_31 AM.png",
   "/hero1/ChatGPT Image Feb 25, 2026, 11_22_31 PM.png",
   "/hero1/ChatGPT Image Feb 25, 2026, 11_37_29 PM.png",
   "/hero1/ChatGPT Image Mar 5, 2026, 01_03_17 AM.png",
   "/hero1/ChatGPT Image Mar 5, 2026, 01_06_54 AM.png",
-  "/hero1/ChatGPT Image Mar 5, 2026, 01_08_07 AM.png",
   "/hero1/ChatGPT Image Mar 5, 2026, 01_09_25 AM.png",
 ];
 
