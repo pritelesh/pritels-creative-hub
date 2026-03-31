@@ -54,10 +54,10 @@ const HireSection = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants}>
-            <h2 className="heading-display text-3xl md:text-4xl text-foreground mb-2">Hire Me</h2>
+            <h2 className="heading-display text-3xl md:text-4xl text-foreground mb-2">Offer for Work</h2>
             <div className="w-12 h-1 bg-foreground mb-8 rounded-full" />
             <p className="text-muted-foreground leading-relaxed mb-10 max-w-lg">
-              Looking for a creative developer or video editor? Let's work together to bring your vision to life.
+              Have a project in mind or a professional opportunity? Let's discuss how we can work together to bring your vision to life.
             </p>
           </motion.div>
 
