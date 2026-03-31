@@ -11,8 +11,8 @@ const HireSection = () => {
 
   useEffect(() => {
     if (state.succeeded) {
-      toast.success("Message sent successfully! I'll get back to you soon.", {
-        description: "Thanks for reaching out, Pritelesh.",
+      toast.success("Thanks for reaching out!", {
+        description: "I've got your message and I'll reply to you soon. Stay tuned!",
         icon: <CheckCircle2 className="text-green-500" />
       });
       setForm({ name: "", email: "", message: "" });
@@ -140,7 +140,7 @@ const HireSection = () => {
                 ) : (
                   <Send size={16} />
                 )}
-                <span>{state.submitting ? "Sending..." : state.succeeded ? "Message Sent" : "Send Message"}</span>
+                <span>{state.submitting ? "Sending..." : state.succeeded ? "Got it! I'll Reply Soon" : "Send Message"}</span>
               </button>
             </motion.form>
           </div>
