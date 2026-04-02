@@ -55,14 +55,19 @@ const ExperienceSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="mb-16 md:mb-20"
         >
-          <h2 className="heading-display text-3xl md:text-4xl text-foreground mb-2">Work Journey</h2>
-          <div className="w-12 h-1 bg-foreground mb-12 rounded-full" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-8 h-[1px] bg-foreground/30 md:hidden" />
+            <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground md:hidden">My Career</p>
+          </div>
+          <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">Work Journey</h2>
+          <div className="w-20 h-1 bg-foreground rounded-full" />
         </motion.div>
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2" />
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border/40 -translate-x-1/2" />
 
           {experiences.map((exp, i) => {
             const isLeft = i % 2 === 0;
@@ -77,10 +82,10 @@ const ExperienceSection = () => {
                   delay: i * 0.1,
                   ease: [0.16, 1, 0.3, 1] // Custom smooth ease-out
                 }}
-                className={`relative mb-12 md:w-1/2 ${isLeft ? "md:pr-16 md:ml-0 md:text-right" : "md:pl-16 md:ml-auto"} pl-16 md:pl-0`}
+                className={`relative mb-16 md:mb-24 md:w-1/2 ${isLeft ? "md:pr-20 md:ml-0 md:text-right" : "md:pl-20 md:ml-auto"} pl-10 md:pl-0`}
               >
                 {/* Timeline dot */}
-                <div className={`absolute top-6 w-4 h-4 rounded-full bg-foreground border-4 border-background shadow-[0_0_15px_rgba(0,0,0,0.3)] z-20 left-6 -translate-x-1/2 ${isLeft ? "md:left-full" : "md:left-0"}`} />
+                <div className={`absolute top-8 w-4 h-4 rounded-full bg-foreground border-4 border-background shadow-[0_0_20px_rgba(0,0,0,0.3)] z-20 left-4 -translate-x-1/2 ${isLeft ? "md:left-full" : "md:left-0"}`} />
 
                 <FloatingCard index={i} className="p-6 hover:border-foreground/30 transition-all duration-300 hover:shadow-xl">
                   <div className={`flex items-center gap-2 mb-2 ${isLeft ? "md:justify-end" : "md:justify-start"}`}>

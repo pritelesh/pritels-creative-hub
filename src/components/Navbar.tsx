@@ -43,7 +43,7 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 w-full flex justify-center pt-4 pointer-events-none`}
+      className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-500 w-full flex justify-center pt-4 pointer-events-none`}
     >
       <div 
         className={`max-w-6xl w-[92%] md:w-fit mx-auto px-6 flex items-center justify-between h-14 rounded-full border pointer-events-auto transition-all duration-500 ${
@@ -73,10 +73,16 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
           <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
-          <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
-          <button onClick={() => setOpen(!open)} className="p-2 text-foreground active:scale-90 transition-transform">
-            {open ? <X size={20} /> : <Menu size={20} />}
+        <div className="flex items-center gap-4 md:hidden">
+          <div className="scale-110">
+            <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
+          </div>
+          <button 
+            onClick={() => setOpen(!open)} 
+            className="p-3 text-foreground active:scale-90 transition-transform bg-foreground/5 rounded-full"
+            aria-label="Toggle Menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
@@ -85,20 +91,22 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
       <AnimatePresence>
         {open && (
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-6 right-6 md:hidden bg-background/95 backdrop-blur-2xl border border-border/40 p-6 rounded-[2rem] shadow-2xl pointer-events-auto space-y-2"
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="absolute top-24 left-4 right-4 md:hidden bg-background/99 backdrop-blur-3xl border border-border/60 p-8 rounded-[2.5rem] shadow-2xl pointer-events-auto space-y-4"
           >
+            <div className="flex flex-col gap-2">
             {navLinks.map((l) => (
               <button
                 key={l.label}
                 onClick={() => handleClick(l.href)}
-                className="block w-full py-3 px-4 rounded-xl text-left text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all"
+                className="block w-full py-4 px-6 rounded-2xl text-left text-sm font-bold text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all border border-transparent hover:border-border/40"
               >
                 {l.label}
               </button>
             ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

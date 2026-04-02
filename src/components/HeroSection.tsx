@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMouseParallax } from "@/hooks/useFloating";
 import BlurImage from "./BlurImage";
+import { Download } from "lucide-react";
 
 const heroImages = [
   "/hero1/ChatGPT Image Feb 17, 2026, 06_19_34 PM.png",
@@ -56,32 +57,40 @@ const HeroSection = () => {
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-center md:text-left"
+          className="text-center md:text-left mt-8 md:mt-0"
         >
-          <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground mb-3">
+          <p className="text-[10px] md:text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4 opacity-80">
             Frontend Developer · Software Engineer
           </p>
-          <h1 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
+          <h1 className="heading-display text-4xl sm:text-5xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-[1.1] tracking-tight">
             Pritelesh Bhowmik Nel
           </h1>
-          <p className="text-lg text-muted-foreground mb-2 font-medium">
+          <p className="text-base md:text-lg text-muted-foreground mb-4 font-medium">
             Admin & Creative Lead at <span className="text-foreground">Chobicode</span>
           </p>
-          <p className="text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto md:mx-0">
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-10 max-w-md mx-auto md:mx-0 opacity-90">
             I create modern websites, engaging video content, and digital experiences using design, development, and AI tools.
           </p>
-          <div className="flex gap-4 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start flex-wrap">
             <a
               href="#gallery"
-              className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:scale-105 transition-all duration-300 border border-primary"
+              className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all duration-300 border border-primary text-center shadow-lg shadow-primary/20"
             >
               View Work
             </a>
             <a
               href="#hire"
-              className="hire-pulse px-6 py-3 rounded-full border border-border text-foreground font-medium text-sm hover:scale-105 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              className="hire-pulse px-8 py-4 rounded-full border border-border text-foreground font-bold text-xs uppercase tracking-widest hover:scale-105 hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-center"
             >
               Hire Me
+            </a>
+            <a
+              href="/CV-pdf/Pritelesh Bhowmik Nel - Resume.pdf.pdf"
+              download="Pritelesh_Bhowmik_Nel_CV.pdf"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-primary/60 text-primary font-bold text-xs uppercase tracking-widest hover:scale-105 hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-center shadow-md shadow-primary/10 group"
+            >
+              <Download size={14} className="group-hover:animate-bounce" />
+              Download CV
             </a>
           </div>
         </motion.div>

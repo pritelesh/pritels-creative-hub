@@ -36,7 +36,7 @@ const GallerySection = () => {
   }, []);
 
   return (
-    <section id="gallery" className="relative py-32 bg-background overflow-hidden min-h-[700px]">
+    <section id="gallery" className="relative py-16 md:py-32 bg-background overflow-hidden min-h-fit md:min-h-[700px]">
       <div className="max-w-7xl mx-auto px-6 h-full flex flex-col">
         
         {/* Section Header */}
@@ -55,14 +55,14 @@ const GallerySection = () => {
           </motion.div>
           <Link
             to="/gallery"
-            className="group flex items-center gap-3 text-xs font-bold text-muted-foreground hover:text-foreground transition-all duration-300 pb-2 border-b border-border/40 hover:border-foreground"
+            className="group flex items-center gap-3 text-[10px] md:text-xs font-bold text-muted-foreground hover:text-foreground transition-all duration-300 pb-2 border-b border-border/40 hover:border-foreground w-fit"
           >
-            <span>Explore Full Archive</span>
-            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <span>EXPLORE FULL ARCHIVE</span>
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        <div className="relative flex-1 rounded-[2.5rem] overflow-hidden border border-border/30 bg-card/10 backdrop-blur-sm min-h-[500px]">
+        <div className="relative flex-1 rounded-[2.5rem] overflow-hidden border border-border/30 bg-card/10 backdrop-blur-sm min-h-fit md:min-h-[500px]">
           <AnimatePresence mode="wait">
             {!isRevealed ? (
               /* LOCKED COVER STATE */
@@ -131,13 +131,13 @@ const GallerySection = () => {
                     className="w-full flex flex-col md:flex-row"
                   >
                     {/* Project Image Gallery (70%) */}
-                    <div className="w-full md:w-[65%] h-full relative group/img overflow-hidden">
+                    <div className="w-full md:w-[65%] min-h-[300px] md:h-full relative group/img overflow-hidden shrink-0">
                        <div className="absolute inset-0 bg-background/20 z-10 pointer-events-none" />
-                       {showcaseProjects[currentIndex].image ? (
+                        {showcaseProjects[currentIndex].image ? (
                           <BlurImage 
                             src={showcaseProjects[currentIndex].image} 
                             alt={showcaseProjects[currentIndex].title}
-                            className="w-full h-full object-cover" 
+                            className="w-full h-full object-cover md:grayscale md:group-hover/img:grayscale-0 transition-all duration-700" 
                             containerClassName="w-full h-full"
                           />
                        ) : (
@@ -154,21 +154,21 @@ const GallerySection = () => {
                     </div>
 
                     {/* Project Info Panel (30%) */}
-                    <div className="w-full md:w-[35%] h-full p-10 md:p-16 flex flex-col justify-center bg-card">
+                    <div className="w-full md:w-[35%] h-full p-6 md:p-16 flex flex-col justify-center bg-card border-t md:border-t-0 md:border-l border-border/30">
                        <motion.div
                          initial={{ opacity: 0, y: 20 }}
                          animate={{ opacity: 1, y: 0 }}
                          transition={{ delay: 0.3 }}
                        >
-                          <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-muted-foreground mb-8">Selected Case 0{currentIndex + 1}</p>
-                          <h3 className="heading-display text-3xl md:text-5xl text-foreground mb-8 leading-tight">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-muted-foreground mb-6 md:mb-8">Selected Case 0{currentIndex + 1}</p>
+                          <h3 className="heading-display text-3xl md:text-5xl text-foreground mb-4 md:mb-8 leading-tight">
                             {showcaseProjects[currentIndex].title}
                           </h3>
                           
-                          <div className="h-0.5 w-12 bg-border mb-12" />
+                          <div className="h-0.5 w-12 bg-foreground mb-6 md:mb-12" />
                           
-                          <p className="text-muted-foreground text-sm leading-relaxed mb-12">
-                            A showcase of technical expertise and creative vision in <span className="text-foreground font-semibold underline decoration-border underline-offset-8">{showcaseProjects[currentIndex].category}</span>. Built for maximum user impact.
+                          <p className="text-foreground/80 text-sm md:text-sm leading-relaxed mb-8 md:mb-12">
+                            A showcase of technical expertise and creative vision in <span className="text-foreground font-semibold underline decoration-foreground/30 underline-offset-8">{showcaseProjects[currentIndex].category}</span>. Built for maximum user impact.
                           </p>
 
                           <div className="flex flex-col gap-6">
@@ -177,7 +177,7 @@ const GallerySection = () => {
                                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                              </button>
                              <div className="pt-6 border-t border-border/30">
-                                <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-[0.3em]">Vertical: {showcaseProjects[currentIndex].category}</span>
+                                 <span className="text-[9px] font-bold uppercase text-foreground/60 tracking-[0.3em]">Vertical: {showcaseProjects[currentIndex].category}</span>
                              </div>
                           </div>
                        </motion.div>
@@ -203,22 +203,22 @@ const GallerySection = () => {
                 </div>
 
                 {/* Manual Controls */}
-                <div className="absolute bottom-10 right-10 z-30 flex gap-4">
-                   <div className="flex items-center gap-4 px-6 py-4 rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-xl">
+                <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 z-30 flex gap-4">
+                   <div className="flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 rounded-full bg-background/90 backdrop-blur-md border border-border/60 shadow-xl scale-90 md:scale-100">
                       <button 
                         onClick={() => setCurrentIndex((prev) => (prev - 1 + showcaseProjects.length) % showcaseProjects.length)}
-                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-muted-foreground hover:text-foreground transition-colors p-1"
                       >
-                         <ArrowRight size={16} className="rotate-180" />
+                         <ArrowRight size={18} className="rotate-180" />
                       </button>
                       <div className="text-[10px] font-bold text-foreground w-12 text-center">
-                        0{currentIndex + 1} / 10
+                        0{currentIndex + 1} <span className="text-muted-foreground/50 mx-1">/</span> 10
                       </div>
                       <button 
                         onClick={handleNext}
-                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-muted-foreground hover:text-foreground transition-colors p-1"
                       >
-                         <ArrowRight size={16} />
+                         <ArrowRight size={18} />
                       </button>
                    </div>
                 </div>

@@ -37,7 +37,7 @@ const SkillsSection = () => {
           <div className="w-12 h-1 bg-foreground mb-12 rounded-full" />
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5">
           {skillGroups.map((group, i) => (
             <motion.div
               key={group.title}
