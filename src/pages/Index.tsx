@@ -5,6 +5,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import SkillsSection from "@/components/SkillsSection";
 import EducationSection from "@/components/EducationSection";
 import GallerySection from "@/components/GallerySection";
+// import ShowcaseSection from "@/components/ShowcaseSection";
 import HireSection from "@/components/HireSection";
 import Footer from "@/components/Footer";
 import { useTheme } from "@/hooks/useTheme";
@@ -21,6 +22,7 @@ const Index = () => {
       <SkillsSection />
       <EducationSection />
       <GallerySection />
+      {/* <ShowcaseSection /> */}
       <HireSection />
       <Footer />
     </>

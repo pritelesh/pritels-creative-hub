@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Code, Palette, Users } from "lucide-react";
-import FloatingCard from "./FloatingCard";
+import { cn } from "@/lib/utils";
 
 const skillGroups = [
   {
@@ -47,22 +47,24 @@ const SkillsSection = () => {
               transition={{ duration: 0.4, delay: i * 0.1 }}
               className={group.span}
             >
-              <FloatingCard index={i} className="p-6 h-full hover:border-foreground/30 transition-colors duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <group.icon size={20} className="text-foreground" />
-                  <h3 className="font-heading font-semibold text-foreground">{group.title}</h3>
+              <div className={cn("p-8 h-full neu-flat rounded-3xl transition-transform duration-500 hover:scale-[1.02]", group.span)}>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="neu-pressed p-2 rounded-xl">
+                    <group.icon size={20} className="text-foreground" />
+                  </div>
+                  <h3 className="font-heading font-bold text-foreground text-lg">{group.title}</h3>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {group.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="px-3 py-1.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border/50"
+                      className="px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider neu-button text-muted-foreground hover:text-foreground cursor-default transition-colors"
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
-              </FloatingCard>
+              </div>
             </motion.div>
           ))}
         </div>

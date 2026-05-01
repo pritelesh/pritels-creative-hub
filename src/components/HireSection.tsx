@@ -63,39 +63,39 @@ const HireSection = () => {
 
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div variants={itemVariants} className="space-y-6">
-              <FloatingCard index={0} className="p-5 hover:border-foreground/30 transition-all duration-300 group">
+              <div className="p-6 rounded-3xl neu-flat transition-transform duration-300 hover:scale-[1.02] group">
                 <a href="mailto:priteleshnel@gmail.com" className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors duration-300">
-                    <Mail size={22} />
+                  <div className="w-12 h-12 rounded-full neu-button flex items-center justify-center group-hover:neu-pressed transition-all duration-300">
+                    <Mail size={22} className="text-foreground" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Email</p>
-                    <p className="text-sm font-medium text-foreground">priteleshnel@gmail.com</p>
+                    <p className="text-sm font-bold text-foreground">priteleshnel@gmail.com</p>
                   </div>
                 </a>
-              </FloatingCard>
+              </div>
               
-              <FloatingCard index={1} className="p-5 hover:border-foreground/30 transition-all duration-300 group">
+              <div className="p-6 rounded-3xl neu-flat transition-transform duration-300 hover:scale-[1.02] group">
                 <a 
                   href="https://www.linkedin.com/in/pritelesh-nel-303533297/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center gap-5"
                 >
-                  <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-[#0077B5] group-hover:text-white transition-colors duration-300">
-                    <Linkedin size={22} />
+                  <div className="w-12 h-12 rounded-full neu-button flex items-center justify-center group-hover:neu-pressed transition-all duration-300">
+                    <Linkedin size={22} className="text-foreground" />
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">LinkedIn</p>
-                    <p className="text-sm font-medium text-foreground">Pritelesh Nel</p>
+                    <p className="text-sm font-bold text-foreground">Pritelesh Nel</p>
                   </div>
                 </a>
-              </FloatingCard>
+              </div>
             </motion.div>
 
             <motion.form
               variants={itemVariants}
-              className="space-y-4"
+              className="space-y-6"
               onSubmit={handleSubmit}
             >
               <div className="space-y-4">
@@ -106,7 +106,7 @@ const HireSection = () => {
                   required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-4 py-4 rounded-2xl bg-card/60 backdrop-blur-md border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40 focus:ring-1 focus:ring-foreground/10 transition-all shadow-inner"
+                  className="w-full px-5 py-4 rounded-2xl neu-pressed text-sm text-foreground placeholder:text-muted-foreground focus:outline-none transition-all"
                 />
                 <input
                   type="email"
@@ -115,7 +115,7 @@ const HireSection = () => {
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-4 py-4 rounded-2xl bg-card/60 backdrop-blur-md border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40 focus:ring-1 focus:ring-foreground/10 transition-all shadow-inner"
+                  className="w-full px-5 py-4 rounded-2xl neu-pressed text-sm text-foreground placeholder:text-muted-foreground focus:outline-none transition-all"
                 />
                 <textarea
                   name="message"
@@ -124,23 +124,22 @@ const HireSection = () => {
                   rows={4}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full px-4 py-4 rounded-2xl bg-card/60 backdrop-blur-md border border-border/50 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40 focus:ring-1 focus:ring-foreground/10 transition-all resize-none shadow-inner"
+                  className="w-full px-5 py-4 rounded-2xl neu-pressed text-sm text-foreground placeholder:text-muted-foreground focus:outline-none transition-all resize-none"
                 />
               </div>
               <button
                 type="submit"
                 disabled={state.submitting}
-                className="group relative flex items-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-sm font-bold overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-foreground/10 disabled:opacity-70 disabled:scale-100"
+                className="group w-full flex items-center justify-center gap-3 py-4 rounded-full neu-button text-foreground text-sm font-bold transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:scale-100"
               >
-                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                 {state.submitting ? (
                   <Loader2 size={16} className="animate-spin" />
                 ) : state.succeeded ? (
-                  <CheckCircle2 size={16} className="text-green-400" />
+                  <CheckCircle2 size={16} className="text-green-500" />
                 ) : (
                   <Send size={16} />
                 )}
-                <span>{state.submitting ? "Sending..." : state.succeeded ? "Got it! I'll Reply Soon" : "Send Message"}</span>
+                <span>{state.submitting ? "Sending..." : state.succeeded ? "Message Sent!" : "Send Message"}</span>
               </button>
             </motion.form>
           </div>

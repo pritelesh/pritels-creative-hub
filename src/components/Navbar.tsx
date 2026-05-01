@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -31,13 +31,24 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  const handleClick = (href: string) => {
+  const navigate = useNavigate();
+
+  const handleClick = (link: { href: string, isRoute?: boolean }) => {
     setOpen(false);
-    if (!isHomePage) {
-      window.location.href = "/" + href;
+    if (link.isRoute) {
+      if (link.href === "/daily-activities") {
+         navigate("/daily-activities");
+         window.scrollTo(0, 0);
+         return;
+      }
+      navigate(link.href);
       return;
     }
-    const el = document.querySelector(href);
+    if (!isHomePage) {
+      window.location.href = "/" + link.href;
+      return;
+    }
+    const el = document.querySelector(link.href);
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -46,9 +57,9 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
       className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-500 w-full flex justify-center pt-4 pointer-events-none`}
     >
       <div 
-        className={`max-w-6xl w-[92%] md:w-fit mx-auto px-6 flex items-center justify-between h-14 rounded-full border pointer-events-auto transition-all duration-500 ${
+        className={`max-w-6xl w-[92%] md:w-fit mx-auto px-6 flex items-center justify-between h-14 rounded-full pointer-events-auto transition-all duration-500 ${
           scrolled
-            ? "bg-background/80 backdrop-blur-xl border-border/50 shadow-lg shadow-black/5"
+            ? "neu-flat border-none"
             : "bg-transparent border-transparent"
         }`}
       >
@@ -61,15 +72,15 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
             {navLinks.map((l) => (
               <li key={l.label}>
                 <button
-                  onClick={() => handleClick(l.href)}
-                  className="text-xs font-semibold px-4 py-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all duration-300"
+                  onClick={() => handleClick(l)}
+                  className="text-xs font-bold px-5 py-2 rounded-full text-muted-foreground hover:text-foreground transition-all duration-300 hover:neu-pressed"
                 >
                   {l.label}
                 </button>
               </li>
             ))}
           </ul>
-          <div className="w-[1px] h-4 bg-border/40 mx-4" />
+          <div className="w-[1px] h-4 bg-muted-foreground/20 mx-4" />
           <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
         </div>
 
@@ -79,10 +90,10 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
           </div>
           <button 
             onClick={() => setOpen(!open)} 
-            className="p-3 text-foreground active:scale-90 transition-transform bg-foreground/5 rounded-full"
+            className="p-3 text-foreground active:scale-90 transition-transform neu-button rounded-full"
             aria-label="Toggle Menu"
           >
-            {open ? <X size={24} /> : <Menu size={24} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -100,7 +111,7 @@ const Navbar = ({ isDark, onToggleTheme }: NavbarProps) => {
             {navLinks.map((l) => (
               <button
                 key={l.label}
-                onClick={() => handleClick(l.href)}
+                onClick={() => handleClick(l)}
                 className="block w-full py-4 px-6 rounded-2xl text-left text-sm font-bold text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-all border border-transparent hover:border-border/40"
               >
                 {l.label}

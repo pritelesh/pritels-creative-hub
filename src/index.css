@@ -39,6 +39,11 @@
     --font-heading: 'Inter Tight', 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
 
+    /* Neumorphism Variables */
+    --neu-bg: #e0e5ec;
+    --neu-shadow-light: #ffffff;
+    --neu-shadow-dark: #a3b1c6;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -86,6 +91,11 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Neumorphism Variables Dark */
+    --neu-bg: #292d32;
+    --neu-shadow-light: #31363c;
+    --neu-shadow-dark: #212428;
   }
 }
 
@@ -95,7 +105,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: var(--neu-bg);
     font-family: var(--font-body);
     transition: background-color 0.5s ease, color 0.3s ease;
   }
@@ -122,6 +133,33 @@
 
   .transform-style-3d {
     transform-style: preserve-3d;
+  }
+
+  .neu-flat {
+    background-color: var(--neu-bg);
+    box-shadow: 9px 9px 16px var(--neu-shadow-dark), 
+               -9px -9px 16px var(--neu-shadow-light);
+    border: none;
+  }
+
+  .neu-pressed {
+    background-color: var(--neu-bg);
+    box-shadow: inset 6px 6px 10px 0 var(--neu-shadow-dark), 
+                inset -6px -6px 10px 0 var(--neu-shadow-light);
+    border: none;
+  }
+
+  .neu-button {
+    background-color: var(--neu-bg);
+    box-shadow: 6px 6px 12px var(--neu-shadow-dark), 
+               -6px -6px 12px var(--neu-shadow-light);
+    transition: all 0.2s ease-in-out;
+    border: none;
+  }
+  
+  .neu-button:active, .neu-button.active {
+    box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), 
+                inset -4px -4px 8px var(--neu-shadow-light);
   }
 }
 

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
-import FloatingCard from "./FloatingCard";
 
 const education = [
   {
@@ -43,14 +42,16 @@ const EducationSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
             >
-              <FloatingCard index={i} className="p-6 h-full hover:border-foreground/30 transition-colors duration-300">
-                <GraduationCap size={20} className="text-foreground mb-3" />
-                <h3 className="font-heading font-semibold text-foreground text-sm mb-1">{edu.degree}</h3>
-                <p className="text-xs text-muted-foreground">{edu.institution}</p>
+              <div className="p-8 h-full neu-flat rounded-3xl transition-transform duration-500 hover:scale-[1.02] cursor-default flex flex-col">
+                <div className="neu-pressed p-2.5 rounded-xl w-fit mb-4">
+                  <GraduationCap size={20} className="text-foreground" />
+                </div>
+                <h3 className="font-heading font-bold text-foreground text-base mb-2">{edu.degree}</h3>
+                <p className="text-sm text-muted-foreground font-medium mb-4">{edu.institution}</p>
                 {edu.period && (
-                  <p className="text-xs text-muted-foreground/60 mt-2">{edu.period}</p>
+                  <p className="text-xs text-muted-foreground/60 font-bold uppercase tracking-wider mt-auto">{edu.period}</p>
                 )}
-              </FloatingCard>
+              </div>
             </motion.div>
           ))}
         </div>

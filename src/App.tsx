@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Gallery from "./pages/Gallery.tsx";
+import DailyActivities from "./pages/DailyActivities.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -21,6 +22,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
+          {/* Daily Activities page hidden — route disabled intentionally */}
+          {/* <Route path="/daily-activities" element={<DailyActivities />} /> */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

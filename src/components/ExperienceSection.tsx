@@ -87,22 +87,24 @@ const ExperienceSection = () => {
                 {/* Timeline dot */}
                 <div className={`absolute top-8 w-4 h-4 rounded-full bg-foreground border-4 border-background shadow-[0_0_20px_rgba(0,0,0,0.3)] z-20 left-4 -translate-x-1/2 ${isLeft ? "md:left-full" : "md:left-0"}`} />
 
-                <FloatingCard index={i} className="p-6 hover:border-foreground/30 transition-all duration-300 hover:shadow-xl">
-                  <div className={`flex items-center gap-2 mb-2 ${isLeft ? "md:justify-end" : "md:justify-start"}`}>
-                    <Briefcase size={14} className="text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground font-medium tracking-wide uppercase">{exp.period}</span>
+                <div className={`neu-flat p-8 rounded-3xl transition-all duration-500 hover:scale-[1.02] cursor-default`}>
+                  <div className={`flex items-center gap-2 mb-3 ${isLeft ? "md:justify-end" : "md:justify-start"}`}>
+                    <div className="neu-pressed p-1.5 rounded-lg">
+                      <Briefcase size={14} className="text-foreground" />
+                    </div>
+                    <span className="text-xs text-muted-foreground font-bold tracking-widest uppercase">{exp.period}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-foreground text-xl mb-1">{exp.role}</h3>
-                  <p className="text-sm font-medium text-foreground/80 mb-4">{exp.company}</p>
-                  <ul className={`space-y-2 ${isLeft ? "md:flex md:flex-col md:items-end" : ""}`}>
+                  <h3 className="font-heading font-extrabold text-foreground text-xl mb-1">{exp.role}</h3>
+                  <p className="text-sm font-bold text-foreground/70 mb-6">{exp.company}</p>
+                  <ul className={`space-y-3 ${isLeft ? "md:flex md:flex-col md:items-end" : ""}`}>
                     {exp.points.map((point, j) => (
                       <li key={j} className={`text-sm text-muted-foreground flex items-start gap-3 ${isLeft ? "md:flex-row-reverse" : ""}`}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 mt-2 shrink-0" />
-                        <span>{point}</span>
+                        <span className="w-2 h-2 rounded-full bg-muted-foreground/30 mt-1.5 shrink-0" />
+                        <span className="font-medium leading-relaxed">{point}</span>
                       </li>
                     ))}
                   </ul>
-                </FloatingCard>
+                </div>
               </motion.div>
             );
           })}

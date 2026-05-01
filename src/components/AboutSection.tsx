@@ -29,7 +29,7 @@ const AboutSection = () => {
           </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {highlights.map((item, i) => (
             <motion.div
               key={i}
@@ -37,10 +37,12 @@ const AboutSection = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-foreground/20 transition-colors duration-300"
+              className="flex items-center gap-6 p-6 rounded-2xl neu-flat transition-transform duration-300 hover:scale-[1.02] cursor-default"
             >
-              <item.icon size={20} className="text-foreground mt-0.5 shrink-0" />
-              <span className="text-sm text-muted-foreground">{item.text}</span>
+              <div className="neu-pressed p-3 rounded-xl">
+                 <item.icon size={20} className="text-foreground shrink-0" />
+              </div>
+              <span className="text-sm md:text-base text-muted-foreground font-medium">{item.text}</span>
             </motion.div>
           ))}
         </div>
