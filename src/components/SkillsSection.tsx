@@ -6,19 +6,19 @@ const skillGroups = [
   {
     title: "Development",
     icon: Code,
-    skills: ["React", "Next.js", "Tailwind CSS", "WordPress", "Shopify", "Git & GitHub", "VS Code", "Vercel / Netlify", "Postman"],
+    skills: ["HTML5", "CSS3", "JavaScript (ES6+)", "TypeScript", "React.js", "Next.js", "Tailwind CSS", "Responsive Design", "REST API", "Git & GitHub", "VS Code", "Vercel", "Postman", "WordPress", "Shopify"],
     span: "md:col-span-2 md:row-span-2",
   },
   {
-    title: "Creative & AI",
+    title: "UI / Design",
     icon: Palette,
-    skills: ["DaVinci Resolve", "3D Blender", "Figma", "Spline", "Dribbble", "Stitch", "ChatGPT", "Gemini", "Grok", "Lovable", "Emigrant"],
+    skills: ["Figma", "UI/UX Design", "Design Systems", "Component Design", "DaVinci Resolve", "Spline", "Dribbble"],
     span: "md:col-span-1 md:row-span-2",
   },
   {
-    title: "Admin & Management",
+    title: "Professional Skills",
     icon: Users,
-    skills: ["Project Management", "Client Relations", "CRM Tools", "Team Leadership"],
+    skills: ["Project Management", "Client Communication", "Cross-Market Collaboration", "Agile Workflow", "Team Leadership", "Problem Solving"],
     span: "md:col-span-3",
   },
 ];

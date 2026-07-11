@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 import { Code, Video, Box, Globe, Briefcase } from "lucide-react";
 
 const highlights = [
-  { icon: Code, text: "Web Development — WordPress, Shopify, React, Tailwind CSS" },
-  { icon: Video, text: "Video Editing — DaVinci Resolve" },
-  { icon: Box, text: "3D Learning — Blender" },
-  { icon: Globe, text: "Experience with USA-based property preservation companies" },
-  { icon: Briefcase, text: "Clients: Leisure Holidays, J&J Global, Polash Computer" },
+  { icon: Code, text: "Frontend Development" },
+  { icon: Video, text: "Creative Production" },
+  { icon: Box, text: "Visual Craft" },
+  { icon: Globe, text: "Cross-Market Client Experience" },
+  { icon: Briefcase, text: "International Client Work" },
 ];
 
 const AboutSection = () => {
@@ -22,10 +22,7 @@ const AboutSection = () => {
           <h2 className="heading-display text-3xl md:text-4xl text-foreground mb-2">About Me</h2>
           <div className="w-12 h-1 bg-foreground mb-8 rounded-full" />
           <p className="text-muted-foreground leading-relaxed mb-10 max-w-2xl">
-            I'm a creative professional with hands-on experience in web development, video production, 
-            and digital design. Currently serving as Admin & Creative Lead at Chobicode, I bring ideas to 
-            life through clean code and compelling visuals. I've collaborated with international clients 
-            and continuously push my skills into new domains like 3D and AI-powered tools.
+            I’m a frontend-focused designer and developer building polished, responsive web experiences for modern brands and international clients. My work combines UI/UX thinking, clean frontend development, and strong product awareness across React, Next.js, Tailwind CSS, Shopify, and WordPress. I care deeply about performance, usability, and detail — creating websites that are both visually refined and functionally reliable.
           </p>
         </motion.div>
 

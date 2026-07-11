@@ -61,29 +61,29 @@ const HeroSection = () => {
           className="text-center md:text-left mt-8 md:mt-0"
         >
           <p className="text-[10px] md:text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4 opacity-80 font-bold">
-            Frontend Developer · Software Engineer
+            Frontend Designer · Developer · UI/UX
           </p>
           <h1 className="heading-display text-4xl sm:text-5xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-[1.1] tracking-tight">
-            Pritelesh Bhowmik Nel
+            Frontend Developer with a UI Design Mindset
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-4 font-bold">
             Admin & Creative Lead at <span className="text-foreground">Chobicode</span>
           </p>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-12 max-w-md mx-auto md:mx-0 opacity-90 font-medium">
-            I create modern websites, engaging video content, and digital experiences using design, development, and AI tools.
+            I turn ideas into elegant, responsive digital experiences with a strong focus on usability, detail, and product quality.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start flex-wrap">
             <a
               href="#gallery"
               className="px-10 py-4 rounded-full neu-button text-foreground font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all duration-300 text-center"
             >
-              View Work
+              View My Work
             </a>
             <a
               href="#hire"
               className="hire-pulse px-10 py-4 rounded-full neu-button text-foreground font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all duration-300 text-center"
             >
-              Hire Me
+              Let&apos;s Connect
             </a>
             <a
               href="/CV-pdf/Pritelesh Bhowmik Nel - Resume.pdf.pdf"

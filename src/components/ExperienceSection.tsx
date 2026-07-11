@@ -8,10 +8,10 @@ const experiences = [
     company: "Chobicode",
     period: "Nov 2024 – Present",
     points: [
-      "Managing web & media projects end-to-end",
-      "WordPress & Shopify development for international clients",
-      "Video content creation for Leisure Holidays, J&J Global",
-      "Brand identity & creative direction",
+      "Led web and media projects from concept to delivery",
+      "Developed WordPress and Shopify solutions for international clients",
+      "Delivered creative direction for digital and brand-focused projects",
+      "Collaborated closely with clients on content and campaign needs",
     ],
   },
   {
@@ -19,9 +19,9 @@ const experiences = [
     company: "Klemton Contracting Services",
     period: "Mar 2023 – Jul 2024",
     points: [
-      "US-based property preservation management",
-      "Workflow accuracy & compliance documentation",
-      "Vendor coordination & quality oversight",
+      "Managed workflow accuracy and compliance documentation",
+      "Coordinated vendors and supported quality oversight",
+      "Maintained organized processes across property preservation operations",
     ],
   },
   {
@@ -29,19 +29,20 @@ const experiences = [
     company: "NextGen ITS",
     period: "Nov 2021 – Mar 2023",
     points: [
-      "Led processing team with quality control standards",
-      "Direct communication with US-based clients",
-      "Operational leadership & team mentorship",
+      "Led processing operations with strong quality control standards",
+      "Partnered with US-based clients through direct communication",
+      "Mentored team members while supporting operational consistency",
     ],
   },
   {
-    role: "Managerial Roles",
+    role: "Operations & Team Management",
     company: "H-Group & LiveinBD",
     period: "2018 – 2020",
     points: [
-      "Operational excellence in service delivery",
-      "Marketing campaigns & brand growth",
-      "Team management & KPI tracking",
+      "Managed service delivery across operational teams",
+      "Supported marketing campaigns and brand growth initiatives",
+      "Tracked team performance against business goals and KPIs",
+      "Strengthened day-to-day execution through leadership and coordination",
     ],
   },
 ];
@@ -61,7 +62,7 @@ const ExperienceSection = () => {
             <div className="w-8 h-[1px] bg-foreground/30 md:hidden" />
             <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-muted-foreground md:hidden">My Career</p>
           </div>
-          <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">Work Journey</h2>
+          <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">Professional Experience</h2>
           <div className="w-20 h-1 bg-foreground rounded-full" />
         </motion.div>
 
